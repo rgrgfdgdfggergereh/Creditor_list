@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creditor List Enricher</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        line-height: 1.5;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 24px;
+      }
+      .error {
+        background: #fde7e7;
+        border: 1px solid #f6b8b8;
+        padding: 12px;
+        border-radius: 6px;
+        color: #821111;
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        margin-top: 12px;
+      }
+      input[type='text'],
+      input[type='file'] {
+        width: 100%;
+        margin-top: 6px;
+      }
+      button {
+        margin-top: 18px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #1f6feb;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Creditor List Portal</h1>
+    <p>
+      Upload your creditor list spreadsheet with at least <code>company_name</code> and
+      <code>amount_lost</code> columns. The portal enriches each company with address and finance
+      contact details from Lusha, then returns a downloadable Excel file.
+    </p>
+
+    <div class="card">
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      <form action="/enrich" method="post" enctype="multipart/form-data">
+        <label for="spreadsheet">Creditor spreadsheet (.csv/.xlsx)</label>
+        <input id="spreadsheet" name="spreadsheet" type="file" accept=".csv,.xlsx,.xls" required />
+
+        <label for="lusha_api_key">Lusha API key</label>
+        <input
+          id="lusha_api_key"
+          name="lusha_api_key"
+          type="text"
+          placeholder="Optional if set in LUSHA_API_KEY"
+        />
+
+        <button type="submit">Enrich and Download</button>
+      </form>
+    </div>
+  </body>
+</html>
